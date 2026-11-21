@@ -5,6 +5,16 @@ Date: 2026-11-22. Status: PENDING OWNER APPROVAL.
 ## Purpose
 Build a reusable 3D set library for multiple series, allowing Codex to compose shots without manually remodeling environments each episode. Each series retains its style bible (CHAR-001 B). Assets may originate from Meshy or properly licensed external sources (MODEL-001 B, LICENSE-001 B).
 
+## Approved cross-cutting requirement: BUILDER-001 C
+The portal must offer two switchable editing modes over the **same scene/project data**:
+- Simple mode: select location, drag/drop character and prop, choose preset action and camera, press Play.
+- Director mode: 3D viewport with move/rotate/scale gizmos, object hierarchy, camera framing and paths, keyframes, character expressions and layered timeline.
+- Switching modes must preserve all data. Simple mode may hide advanced tracks but must never discard them.
+- User can assemble scenes without opening Blender; Blender remains the headless backend for high-quality renders.
+- Preview and final rendering follow AUTO-001 A / APPROVAL-001 A: mandatory preview approval before final.
+- For both modes, enforce 16:9 and 9:16 safe framing (OUTPUT-001 B).
+This requirement is approved; WORLD/MODULAR/PROP/CAMERA/FRAME/LIGHT/SCENE-QA decisions below remain unapproved.
+
 ## Proposed pipeline
 1. Set brief: narrative purpose, style bible, scale, mood, required props, staging zones.
 2. Generate/import geometry; validate materials, texture paths, normals, scale, polygon budgets and licenses.
