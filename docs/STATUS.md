@@ -25,3 +25,9 @@ GitHub workflow success is still unverified; fetch_commit_workflow_runs did not 
 - [x] GDD-03 approved: SOURCE-001 B, LIBRARY-001 B, RETARGET-001 B, BLEND-001 B, LICENSE-001 B, AUTHOR-001 B, PREVIEW-001 B.
 - [ ] GDD-04..10 pending owner approval.
 - Development paused at owner's request until GDD is agreed. Existing S01/S02 prototype files retained, not accepted as final architecture.
+
+## Approved builder addition (2026-11-22)
+- [x] BUILDER-001 C: two-mode visual cartoon builder (simple/director) recorded in GDD canon.
+- [ ] GDD-04 remaining seven decisions pending.
+- [ ] GDD-07 detailed interface design pending.
+- Implementation still paused pending GDD approval.
