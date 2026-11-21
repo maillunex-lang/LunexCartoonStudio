@@ -1,6 +1,6 @@
 # GDD-03 - Animation library, sources, licensing and retargeting (DRAFT)
 
-Date: 2026-11-22. Status: PENDING OWNER APPROVAL. The following decisions are proposals, not canon.
+Date: 2026-11-22. Status: APPROVED 2026-11-22 for seven choices below. Implementation notes and exact source providers remain proposals.
 
 ## Purpose
 A searchable, reusable library of animation clips for many cartoon series and rig families, with clear provenance, compatible retargeting, preview, blending and approval. Codex chooses semantic actions; the deterministic scene compiler translates them into Blender Actions/NLA strips and validates them.
@@ -24,7 +24,7 @@ Licensed animation libraries (e.g. Mixamo, actor-specific marketplaces, open-sou
 ## Automated validation
 Asset file opens; action is non-empty; frame range valid; rig family/mapping compatible; missing bone/IK constraints reported; root motion checked; no severe foot sliding or mesh clipping in preview; source license recorded; preview renders. Some checks (expressiveness, collisions, foot contact) require human visual approval.
 
-## GDD-03 choices
+## GDD-03 approved choices
 **SOURCE-001**
 A - only free libraries.
 B - free and paid licensed libraries plus our own animations (recommended).
@@ -59,6 +59,8 @@ C - AI-only clip creation.
 A - technical file validation only.
 B - automated thumbnail/video preview and mandatory visual approval before publishing to shared library (recommended).
 C - skip preview.
+
+Approved: SOURCE-001 B, LIBRARY-001 B, RETARGET-001 B, BLEND-001 B, LICENSE-001 B, AUTHOR-001 B, PREVIEW-001 B.
 
 ## Acceptance criteria after approval
 - Import at least two legitimately licensed clips with evidence and one original clip.
