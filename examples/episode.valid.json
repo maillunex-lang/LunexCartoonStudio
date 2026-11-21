@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0",
+  "episode_id": "bear_count_demo",
+  "title": "Bear count demo",
+  "fps": 24,
+  "width": 640,
+  "height": 360,
+  "shots": [
+    {
+      "id": "shot_01",
+      "start_frame": 0,
+      "duration_frames": 360,
+      "scene_asset_id": "nursery",
+      "camera_id": "cam_main",
+      "actions": [
+        {
+          "actor_id": "bear",
+          "clip_id": "wave",
+          "start_frame": 0
+        }
+      ]
+    }
+  ]
+}
