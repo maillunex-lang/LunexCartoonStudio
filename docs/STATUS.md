@@ -24,3 +24,10 @@
 - Проверки на VPS: Vite production build PASS (66 modules, JS ~708 kB), schema unit tests 5/5 PASS.
 - **Не подтверждены** полноценные browser interaction tests и экспорт видео; сохранение пока localStorage, не проектная облачная система. В MyMotionStudio изменения пока не перенесены.
 - GDD-01 IN PROGRESS; DEMO-001 C не достигнут, GDD-02 не начинать.
+
+## Рубеж 04: интеграционный срез MyMotionStudio (2026-11-22)
+- Реализован воспроизводимый адаптер `integration/apply.mjs` для upstream commit `161414bc8e7ed45f5fc3e7a278d1759e243e33f4`.
+- `integration/src/HybridOverlay2D.tsx`: 2D Konva overlay поверх 3D R3F viewport в существующем EditorPage. Добавление 2D-спрайта через кнопку, анимация X через `currentTime` существующего таймлайна, сохранение `scene.lunex2d` через `updateScene` существующего Zustand/IndexedDB autosave и JSON проекта.
+- На VPS патч применён к изолированной копии MyMotionStudio; typecheck PASS, upstream tests 89/89 PASS, production build PASS, HTTP 200.
+- Ограничения: браузерный визуальный и интерактивный тест не проведён; 2D-слои не встроены в штатный инспектор/редактор keyframes; нет полноценной глубинной сортировки, drag/drop и mixed-video compositing. Сохранение на уровне проекта интегрировано в существующий механизм, но round-trip смешанной сцены через UI ещё не протестирован.
+- **Экспорт длинного видео не реализован**. GDD-01 IN PROGRESS, DEMO-001 C не достигнут. GDD-02 не начинать.
