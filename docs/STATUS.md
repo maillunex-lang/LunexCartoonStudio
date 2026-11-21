@@ -48,3 +48,11 @@
 - После исправления патча: TypeScript PASS, 89/89 unit tests PASS, Vite build PASS.
 - ffmpeg как системная команда на VPS отсутствует; обнаружен вспомогательный ffmpeg в кэше Playwright, но это не production video pipeline.
 - GDD-01 остаётся IN PROGRESS, DEMO-001 C не достигнут, GDD-02 не начинать.
+
+## Рубеж 07: исправлен E2E, смешанный WebM подтверждён, long-render PoC начат
+- Повторяемый Chromium Playwright E2E в `integration/e2e/mixed-export.cjs` прошёл: проект с зелёным 3D-кубом, оранжевый 2D-объект через UI, IndexedDB autosave 1/1, reload 1/1, экспорт WebM 37,365 байт, pageerrors 0.
+- Декодирование VP8 WebM 853×480: 44 исходных кадра, проверены первый/средний/последний, оба слоя подтверждены пиксельными проверками. `integration/e2e/check_decoded_frames.py` PASS.
+- Причина зависания предыдущего теста: неверное прямое обращение к IndexedDB; заменено на штатный Dexie API приложения с таймаутами.
+- Длинный экспорт: `integration/long-render/manifest.mjs` и 4/4 тестов PASS (включая план 60 минут 30fps, 108000 кадров). **Это только планировщик сегментов, не рендер-воркер и не готовый экспорт длинного видео**.
+- Детали и воспроизведение: `docs/research/GDD_01_MILESTONE_07.md`.
+- GDD-01 IN PROGRESS; DEMO-001 C не принят; GDD-02 не начинать.
