@@ -26,3 +26,17 @@ export function updateSegment(manifest,id,status,{checksum=null}={}){
 export function canAssemble(manifest){
  return manifest.segments.length>0&&manifest.segments.every(s=>s.status==='complete'&&s.checksum);
 }
+
+/**
+ * GDD-01 milestone 08: validated render job for short cartoons.
+ * This is a contract/manifest, not an encoder or a running server worker.
+ */
+export function planCartoonExport({jobId='cartoon',durationSeconds,fps=30,segmentSeconds=30,width=1920,height=1080,format='mp4'}){
+ if(durationSeconds>300)throw Error('Cartoon duration must not exceed 300 seconds');
+ if(!Number.isInteger(width)||!Number.isInteger(height)||width<16||height<16||width>1920||height>1080)throw Error('Resolution must be within 1920x1080');
+ if(!['mp4','webm'].includes(format))throw Error('Unsupported export format');
+ if(!Number.isFinite(segmentSeconds)||segmentSeconds<15||segmentSeconds>30)throw Error('Segments must be 15-30 seconds');
+ if(fps!==30)throw Error('Milestone 08 requires 30 FPS');
+ const plan=planSegments({jobId,durationSeconds,fps,segmentSeconds});
+ return {...plan,width,height,format,codec:format==='mp4'?'h264':'vp8',audio:false,maxDurationSeconds:300};
+}
