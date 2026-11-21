@@ -20,7 +20,7 @@ export function HybridOverlay2D(){
   const scene=project?.scenes.find(s=>s.id===sceneId) as HybridScene|undefined;
   if(!scene||!sceneId)return null;
   const sprites=scene.lunex2d??[];
-  return <div id="lunex-hybrid-overlay" style={{position:'absolute',inset:0,pointerEvents:'none',zIndex:4}}>
+  return <div id="lunex-hybrid-overlay" data-lunex-hybrid="true" style={{position:'absolute',inset:0,pointerEvents:'none',zIndex:4}}>
     {enabled&&<Stage width={size.w} height={size.h} style={{pointerEvents:'none'}}><Layer>
       {sprites.map(s=><Circle key={s.id} x={sampleAtTime(s,time)/960*size.w} y={s.y/540*size.h} radius={24} fill={s.color} shadowBlur={12} shadowOpacity={0.4}/>)}
       <Text text="Lunex 2D overlay + 3D viewport" x={14} y={12} fontSize={13} fill="#e5e7eb" shadowColor="#000" shadowBlur={4}/>
@@ -30,4 +30,11 @@ export function HybridOverlay2D(){
       <button style={{background:'#374151',color:'#fff',padding:'5px 8px',borderRadius:5}} onClick={()=>setEnabled(!enabled)}>{enabled?'Скрыть 2D':'Показать 2D'}</button>
     </div>
   </div>;
+}
+
+export function HybridLayersPanel(){
+ const project=useEditorStore(s=>s.project);const sceneId=useEditorStore(s=>s.currentSceneId);const updateScene=useEditorStore(s=>s.updateScene);
+ const scene=project?.scenes.find(s=>s.id===sceneId) as HybridScene|undefined;if(!scene||!sceneId||project?.mode!=='3d')return null;
+ const sprites=scene.lunex2d??[];
+ return <div className="p-2 border-b border-ink-700"><div className="text-xs font-semibold text-ink-300 mb-2">Lunex 2D-слои ({sprites.length})</div>{sprites.map((sprite,i)=><div key={sprite.id} className="flex items-center gap-2 text-xs p-1"><span className="flex-1 truncate">2D #{i+1} · {sprite.id}</span><button title="Удалить 2D-слой" className="text-red-400" onClick={()=>updateScene(sceneId,{lunex2d:sprites.filter(s=>s.id!==sprite.id)} as Partial<Scene>)}>Удалить</button></div>)}<button className="text-xs text-violet-300" onClick={()=>updateScene(sceneId,{lunex2d:[...sprites,sample()]} as Partial<Scene>)}>+ Добавить 2D-слой</button></div>;
 }
