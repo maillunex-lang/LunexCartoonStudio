@@ -1,33 +1,7 @@
-# Status - 2026-11-22
+# Статус
 
-**Состояние:** IN PROGRESS, S01. Реализация конвейера рендера ещё не начата.
-
-- [x] Концепция и ASSET-001 C утверждены.
-- [x] ROADMAP S01-S14 сформирован.
-- [x] S01: первоначальные JSON Schema, примеры, тесты pytest, CI workflow, .gitignore и архитектурная записка добавлены в main.
-- [ ] S01: дождаться успешного GitHub Actions CI и проверить тесты на реальном запуске.
-- [ ] S01: дополнить проверки временных границ, ссылочной целостности и разрешений ресурсов в следующей итерации контрактов.
-- [ ] S02: 15-секундное Blender-демо.
-- [ ] S03-S14: не начаты.
-
-**Следующий шаг:** подтвердить CI и завершить S01, затем S02. Не помечать этап DONE без проверки.
-
-## S02 preparation
-- [x] Procedural Blender render script and runbook committed to main.
-- [ ] Render executed on Blender-capable host; MP4 and ffprobe inspection pending.
-- [ ] Rigged animation clips and Meshy character import pending.
-GitHub workflow success is still unverified; fetch_commit_workflow_runs did not return a matching PR-triggered run for the last checked commit (this does not establish CI failure).
-
-## Planning gate (2026-11-22)
-- [x] Draft master GDD and GDD-01..10 approval plan added.
-- [x] GDD-01 approved and recorded: AUTO-001 A, EDIT-001 B, OUTPUT-001 B, SCOPE-001 B, APPROVAL-001 A.
-- [x] GDD-02 approved: CHAR-001 B, MODEL-001 B, RIG-001 B, FACE-001 B, QUALITY-001 B, VARIANT-001 B.
-- [x] GDD-03 approved: SOURCE-001 B, LIBRARY-001 B, RETARGET-001 B, BLEND-001 B, LICENSE-001 B, AUTHOR-001 B, PREVIEW-001 B.
-- [ ] GDD-04..10 pending owner approval.
-- Development paused at owner's request until GDD is agreed. Existing S01/S02 prototype files retained, not accepted as final architecture.
-
-## Approved builder addition (2026-11-22)
-- [x] BUILDER-001 C: two-mode visual cartoon builder (simple/director) recorded in GDD canon.
-- [ ] GDD-04 remaining seven decisions pending.
-- [ ] GDD-07 detailed interface design pending.
-- Implementation still paused pending GDD approval.
+- Перезапуск v2: старое содержимое main заменено новым минимальным проектным каркасом по явному выбору B.
+- GDD-01: DRAFT, ожидает выбора.
+- GitHub research GDD-01: предстоит после выбора.
+- Код и тесты v2: ещё не реализованы.
+- Прогресс: 0/10 GDD-этапов завершено.

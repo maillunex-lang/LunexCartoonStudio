@@ -1,12 +1,12 @@
-# Rules for Codex and other development agents
+# Правила разработки Lunex Cartoon Studio
 
-1. Read docs/GDD_DECISIONS.md, ROADMAP.md and docs/STATUS.md before changing anything.
-2. Work sequentially from S01 to S14; never claim DONE without the stage's acceptance evidence.
-3. Keep source, tests and docs synchronized; update docs/STATUS.md after each stage.
-4. Never change approved GDD decisions without owner approval.
-5. Use deterministic scene specifications, versioned asset manifests and reproducible builds.
-6. Check third-party model/animation licenses and record provenance; do not assume free means commercial use.
-7. Never commit API keys, tokens, large 3D binaries, renders or caches. Use environment variables and external asset storage.
-8. Prefer a low-cost preview before high-resolution rendering; log render time and resource use.
-9. Separate automatic validation from manual artistic approval; never assert that motion quality was verified automatically.
-10. Make focused commits with stage IDs and report tests, artifacts, limitations and next stage.
+1. Источник истины: docs/GDD_DECISIONS.md. Черновики не являются каноном.
+2. Каждый этап: предложение вариантов -> явное утверждение владельца -> GitHub research -> лицензии/совместимость/безопасность -> план интеграции -> код -> тесты -> демонстрация -> приёмка.
+3. После утверждения обязательно искать готовые GitHub-решения; сохранять кандидатов, URL, commit/tag, лицензию, ограничения, выбор и причины в docs/research/GDD-XX_GITHUB.md.
+4. Нельзя интегрировать сторонний код без проверки лицензии, зависимостей, security и прав на ассеты. Сохранять NOTICE/атрибуцию по условиям.
+5. Использовать адаптеры и единый версионированный формат сцены; не привязывать все данные к конкретному стороннему редактору.
+6. Сначала локальный прототип и автоматические проверки, затем тест в браузере и демонстрация владельцу.
+7. Не объявлять DONE до проверенного результата и приёмки. Документировать ошибки и оставшиеся риски.
+8. Не хранить API-ключи в Git. Не выполнять непроверенные скрипты из пользовательских проектов.
+9. При изменении требований возвращаться к владельцу за подтверждением, не переписывать канон молча.
+10. Сохранённая история Git не означает, что прежние файлы/решения остаются активными: проект перезапущен по выбору владельца (вариант B).
