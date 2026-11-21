@@ -1,0 +1,16 @@
+__pycache__/
+.pytest_cache/
+.venv/
+.env
+.env.*
+!.env.example
+*.blend1
+renders/
+cache/
+assets/raw/
+assets/generated/
+*.mp4
+*.mov
+*.fbx
+*.glb
+*.blend
