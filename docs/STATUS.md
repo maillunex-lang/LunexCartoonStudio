@@ -17,3 +17,8 @@
 - [ ] Render executed on Blender-capable host; MP4 and ffprobe inspection pending.
 - [ ] Rigged animation clips and Meshy character import pending.
 GitHub workflow success is still unverified; fetch_commit_workflow_runs did not return a matching PR-triggered run for the last checked commit (this does not establish CI failure).
+
+## Planning gate (2026-11-22)
+- [x] Draft master GDD and GDD-01..10 approval plan added.
+- [ ] GDD-01..10 pending owner approval.
+- Development paused at owner's request until GDD is agreed. Existing S01/S02 prototype files retained, not accepted as final architecture.
