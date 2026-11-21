@@ -13,6 +13,11 @@ if(!page.includes("import { HybridOverlay2D")){
   page=page.replace(viewport,viewport+'\n            {is3D && <HybridOverlay2D />}');
   writeFileSync(target,page);
 }
+// Earlier versions could insert duplicate overlays; keep one per editor viewport.
+const duplicate='            {is3D && <HybridOverlay2D />}\\n            {is3D && <HybridOverlay2D />}';
+page=readFileSync(target,'utf8');
+while(page.includes(duplicate.replace('\\n','\n')))page=page.replace(duplicate.replace('\\n','\n'),'            {is3D && <HybridOverlay2D />}');
+writeFileSync(target,page);
 const panels=resolve(root,'src/components/editor/RightPanels.tsx');let panelSource=readFileSync(panels,'utf8');if(!panelSource.includes('HybridLayersPanel')){
  panelSource="import { HybridLayersPanel } from './HybridOverlay2D';\\n".replace('\\n','\n')+panelSource;
  panelSource=panelSource.replace('<div className="p-2 space-y-0.5">','<div className="p-2 space-y-0.5"><HybridLayersPanel />');
