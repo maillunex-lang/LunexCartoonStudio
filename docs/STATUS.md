@@ -11,3 +11,9 @@
 - [ ] S03-S14: не начаты.
 
 **Следующий шаг:** подтвердить CI и завершить S01, затем S02. Не помечать этап DONE без проверки.
+
+## S02 preparation
+- [x] Procedural Blender render script and runbook committed to main.
+- [ ] Render executed on Blender-capable host; MP4 and ffprobe inspection pending.
+- [ ] Rigged animation clips and Meshy character import pending.
+GitHub workflow success is still unverified; fetch_commit_workflow_runs did not return a matching PR-triggered run for the last checked commit (this does not establish CI failure).
