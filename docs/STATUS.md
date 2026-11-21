@@ -17,3 +17,10 @@
 - HTTP smoke: localhost:4179 вернул 200; Chromium headless загрузил HTML. **Визуальная корректность WebGL и интерактивность не подтверждены**: snap Chromium сообщил предупреждение software WebGL.
 - Это отдельный PoC, а не интеграция в MyMotionStudio. UI редактора, реальные GLB/2D ассеты, keyframes, автосохранение, версии, серверный экспорт длинного видео ещё не реализованы.
 - Публичный сайт не развёрнут, существующие сервисы VPS не изменены.
+
+## Технический рубеж 03: таймлайн в browser PoC
+- Добавлены 10-секундный keyframe timeline, seek/scrub, Play/Pause, добавление/замена ключевых кадров позиции Y и поворота, интерполяция, localStorage autosave, JSON export/import с анимацией.
+- Реализация: `poc/hybrid-browser/src/main.js` и `index.html`.
+- Проверки на VPS: Vite production build PASS (66 modules, JS ~708 kB), schema unit tests 5/5 PASS.
+- **Не подтверждены** полноценные browser interaction tests и экспорт видео; сохранение пока localStorage, не проектная облачная система. В MyMotionStudio изменения пока не перенесены.
+- GDD-01 IN PROGRESS; DEMO-001 C не достигнут, GDD-02 не начинать.
