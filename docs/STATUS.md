@@ -21,5 +21,6 @@ GitHub workflow success is still unverified; fetch_commit_workflow_runs did not 
 ## Planning gate (2026-11-22)
 - [x] Draft master GDD and GDD-01..10 approval plan added.
 - [x] GDD-01 approved and recorded: AUTO-001 A, EDIT-001 B, OUTPUT-001 B, SCOPE-001 B, APPROVAL-001 A.
-- [ ] GDD-02..10 pending owner approval.
+- [x] GDD-02 approved: CHAR-001 B, MODEL-001 B, RIG-001 B, FACE-001 B, QUALITY-001 B, VARIANT-001 B.
+- [ ] GDD-03..10 pending owner approval.
 - Development paused at owner's request until GDD is agreed. Existing S01/S02 prototype files retained, not accepted as final architecture.
