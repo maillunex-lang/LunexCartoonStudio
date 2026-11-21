@@ -4,7 +4,7 @@ import {resolve,dirname} from 'node:path';
 const root=resolve(process.argv[2]??'');if(!process.argv[2])throw Error('Usage: node integration/apply.mjs /path/to/my-motion-studio');
 const target=resolve(root,'src/pages/EditorPage.tsx');let page=readFileSync(target,'utf8');
 const imp="import { HybridOverlay2D, HybridLayersPanel } from '@/components/editor/HybridOverlay2D';";
-if(!page.includes(imp)){
+if(!page.includes("import { HybridOverlay2D")){
   const anchor="import { Canvas3D } from '@/components/editor/Canvas3D';";
   if(!page.includes(anchor))throw Error('Upstream changed: Canvas3D import missing');
   page=page.replace(anchor,anchor+'\n'+imp);
