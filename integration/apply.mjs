@@ -154,3 +154,14 @@ const timelineFile=resolve(root,'src/components/editor/Timeline.tsx');
 let desktopTimeline=readFileSync(timelineFile,'utf8');
 desktopTimeline=desktopTimeline.replace('className="h-48 border-t border-ink-700 bg-ink-850 flex flex-col shrink-0"','className="h-60 border-t border-ink-700 bg-ink-850 flex flex-col shrink-0"');
 writeFileSync(timelineFile,desktopTimeline);
+
+// Desktop object library: selectable presets inserted through the editor store.
+const assetTarget=resolve(root,'src/components/editor/AssetLibrary.tsx');
+copyFileSync(new URL('./src/AssetLibrary.tsx',import.meta.url),assetTarget);
+let editorWithAssets=readFileSync(editorPageFile,'utf8');
+if(!editorWithAssets.includes("import { AssetLibrary }")){
+ editorWithAssets=editorWithAssets.replace("import { Monitor } from 'lucide-react';","import { Monitor, Library } from 'lucide-react';\nimport { AssetLibrary } from '@/components/editor/AssetLibrary';");
+ editorWithAssets=editorWithAssets.replace("const [exportOpen, setExportOpen] = useState(false);","const [exportOpen, setExportOpen] = useState(false);\n  const [assetsOpen, setAssetsOpen] = useState(true);");
+ editorWithAssets=editorWithAssets.replace("{is3D ? <LeftToolbar3D /> : <LeftToolbar2D />}","{is3D ? <LeftToolbar3D /> : <LeftToolbar2D />}\n        <div className=\"flex flex-col border-r border-ink-700 bg-ink-850\"><button data-lunex-assets-toggle aria-label=\"Библиотека объектов\" title=\"Библиотека объектов\" className={\`icon-btn m-2 \${assetsOpen ? 'icon-btn-active' : ''}\`} onClick={() => setAssetsOpen(v => !v)}><Library className=\"w-5 h-5\" /></button></div>\n        {assetsOpen && <AssetLibrary onClose={() => setAssetsOpen(false)} />}");
+ writeFileSync(editorPageFile,editorWithAssets);
+}
