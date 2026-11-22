@@ -100,3 +100,14 @@ writeFileSync(i18nPath,lang);
 let sharedHeader=readFileSync(headerPath,'utf8');
 sharedHeader=sharedHeader.replaceAll("changeLanguage('fr')","changeLanguage('ru')").replaceAll("i18n.language === 'fr'","i18n.language === 'ru'").replaceAll('>FR<','>RU<');
 writeFileSync(headerPath,sharedHeader);
+
+const cssPath=resolve(root,'src/index.css');
+if((await import('node:fs')).existsSync(cssPath)){
+ let css=readFileSync(cssPath,'utf8');
+ if(!css.includes('/* Lunex mobile viewport fix */')){
+  css+='\n/* Lunex mobile viewport fix */\nhtml, body, #root { max-width: 100%; overflow-x: clip; }\n';
+  writeFileSync(cssPath,css);
+ }
+}
+html=readFileSync(htmlPath,'utf8').replace('2D & 3D Motion Design Editor','Студия мультфильмов').replace('Create stunning 2D & 3D motion design videos right in your browser. Offline-first, no install required.','Создавай мультфильмы в 2D и 3D прямо в браузере.');
+writeFileSync(htmlPath,html);
