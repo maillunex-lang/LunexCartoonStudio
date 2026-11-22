@@ -182,3 +182,13 @@ writeFileSync(settingsUiPath,settingsUi);
 const factoryPath=resolve(root,'src/lib/factories.ts');
 let factory=readFileSync(factoryPath,'utf8').replace("text: 'Votre texte'","text: 'Твой текст'");
 writeFileSync(factoryPath,factory);
+
+// PWA manifest must use the deployment subpath, Russian branding and language.
+const pwaConfigPath=resolve(root,'vite.config.ts');
+let pwaConfig=readFileSync(pwaConfigPath,'utf8');
+pwaConfig=pwaConfig.replaceAll("name: 'MyMotionStudio'","name: 'Lunex Cartoon Studio'").replaceAll("short_name: 'MyMotionStudio'","short_name: 'Lunex Studio'").replaceAll("label: \"MyMotionStudio\"","label: \"Lunex Cartoon Studio\"");
+pwaConfig=pwaConfig.replace("description: 'Create 2D & 3D motion design videos in your browser'","description: 'Студия мультфильмов 2D и 3D в браузере'");
+pwaConfig=pwaConfig.replace('start_url: "/",','start_url: "/cartoon-studio/",').replace('id: "/",','id: "/cartoon-studio/",').replace('lang: "en",','lang: "ru",');
+pwaConfig=pwaConfig.replaceAll("src: '/icon-192.png'","src: '/cartoon-studio/icon-192.png'").replaceAll("src: '/icon-512.png'","src: '/cartoon-studio/icon-512.png'");
+pwaConfig=pwaConfig.replaceAll('src: "/desktop.webp"','src: "/cartoon-studio/desktop.webp"').replaceAll('src: "/phone.webp"','src: "/cartoon-studio/phone.webp"');
+writeFileSync(pwaConfigPath,pwaConfig);
