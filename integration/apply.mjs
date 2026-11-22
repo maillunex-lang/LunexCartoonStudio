@@ -95,7 +95,7 @@ if(!locales.includes("import projects_ru from './ru/projects'")){
 const i18nPath=resolve(root,'src/lib/i18n.ts');
 let lang=readFileSync(i18nPath,'utf8');
 lang=lang.replace("fallbackLng: 'fr'","fallbackLng: 'en'").replace("supportedLngs: ['fr', 'en']","supportedLngs: ['ru', 'fr', 'en']").replace("order: ['localStorage', 'navigator']","order: ['localStorage']").replace("lookupLocalStorage: LANGUAGE_STORAGE_KEY,","lookupLocalStorage: LANGUAGE_STORAGE_KEY,");
-lang=lang.replace("fallbackLng: 'en',","fallbackLng: 'en',\n    lng: 'ru',");
+if(!lang.includes("lng: 'ru'"))lang=lang.replace("fallbackLng: 'en',","fallbackLng: 'en',\n    lng: 'ru',");
 writeFileSync(i18nPath,lang);
 let sharedHeader=readFileSync(headerPath,'utf8');
 sharedHeader=sharedHeader.replaceAll("changeLanguage('fr')","changeLanguage('ru')").replaceAll("i18n.language === 'fr'","i18n.language === 'ru'").replaceAll('>FR<','>RU<');
