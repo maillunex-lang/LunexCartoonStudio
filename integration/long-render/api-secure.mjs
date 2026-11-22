@@ -22,7 +22,7 @@ for(const ent of fs.readdirSync(root,{withFileTypes:true})){if(!ent.isDirectory(
 queue.sort((a,b)=>a.createdAt-b.createdAt);
 function next(){if(active||!queue.length)return;const j=queue.shift();if(j.status!=='queued')return next();active=j;j.status='rendering';save(j);
 const env={...process.env,LUNEX_JOB_DIR:j.dir,LUNEX_PROJECT_FILE:path.join(j.dir,'project.json'),LUNEX_WIDTH:String(j.width),LUNEX_HEIGHT:String(j.height),LUNEX_SEGMENT_SECONDS:'15',LUNEX_ALLOW_LONG_TEST:'1'};
-const child=spawn(process.execPath,[worker],{env,stdio:['ignore','pipe','pipe']});j.child=child;let tail='';
+const child=spawn(process.execPath,[worker],{env,stdio:['ignore','pipe','pipe'],detached:true});j.child=child;let tail='';
 for(const stream of [child.stdout,child.stderr])stream.on('data',d=>{tail=(tail+d.toString()).slice(-2000)});
 let settled=false;const finish=(code,error)=>{if(settled)return;settled=true;j.child=null;if(j.status!=='cancelled'){j.status=code===0?'completed':'failed';j.error=error||null}save(j);active=null;next()};
 child.on('error',e=>finish(1,e.message));child.on('close',code=>finish(code,code===0?null:tail));
@@ -44,7 +44,7 @@ const id=randomUUID(),dir=path.join(root,id);fs.mkdirSync(dir,{recursive:true});
 }
 const m=url.pathname.match(/^\/api\/lunex-render\/jobs\/([0-9a-f-]{36})(\/download)?$/);if(!m)return send(res,404,{error:'Not found'});
 const j=jobs.get(m[1]);if(!j)return send(res,404,{error:'Unknown job'});
-if(req.method==='DELETE'&&!m[2]){if(['completed','failed','cancelled'].includes(j.status))return send(res,409,{error:'Already finished'});j.status='cancelled';save(j);if(j.child){j.child.kill('SIGTERM')}return send(res,200,view(j))}
+if(req.method==='DELETE'&&!m[2]){if(['completed','failed','cancelled'].includes(j.status))return send(res,409,{error:'Already finished'});j.status='cancelled';save(j);if(j.child){try{process.kill(-j.child.pid,'SIGTERM')}catch{j.child.kill('SIGTERM')}}return send(res,200,view(j))}
 if(m[2]){if(req.method!=='GET'||j.status!=='completed')return send(res,409,{error:'Not ready'});const file=path.join(j.dir,'final.mp4');if(!fs.existsSync(file))return send(res,404,{error:'File missing'});res.writeHead(200,{'Content-Type':'video/mp4','Content-Length':fs.statSync(file).size,'Content-Disposition':'attachment; filename="lunex-'+j.id+'.mp4"','X-Content-Type-Options':'nosniff'});return fs.createReadStream(file).pipe(res)}
 if(req.method!=='GET')return send(res,405,{error:'Method not allowed'});return send(res,200,view(j));
 });
