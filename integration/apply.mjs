@@ -111,3 +111,25 @@ if((await import('node:fs')).existsSync(cssPath)){
 }
 html=readFileSync(htmlPath,'utf8').replace('2D & 3D Motion Design Editor','Студия мультфильмов').replace('Create stunning 2D & 3D motion design videos right in your browser. Offline-first, no install required.','Создавай мультфильмы в 2D и 3D прямо в браузере.');
 writeFileSync(htmlPath,html);
+
+// Russian editor and settings namespaces; keep overlay idempotent.
+for(const section of ['editor','settings']){
+ const target=resolve(root,'src/locales/ru/'+section+'.ts');
+ copyFileSync(new URL('./src/ru-'+section+'.ts',import.meta.url),target);
+ const importLine="import "+section+"_ru from './ru/"+section+"';";
+ let l=readFileSync(localesPath,'utf8');
+ if(!l.includes(importLine)){
+  l=importLine+'\n'+l;
+  l=l.replace('projects:projects_ru}', 'projects:projects_ru,editor:editor_ru,settings:settings_ru}');
+  writeFileSync(localesPath,l);
+ }
+}
+const settingsPagePath=resolve(root,'src/pages/SettingsPage.tsx');
+let settingsPage=readFileSync(settingsPagePath,'utf8');
+settingsPage=settingsPage.replaceAll("changeLanguage('fr')","changeLanguage('ru')").replaceAll("i18n.language === 'fr'","i18n.language === 'ru'").replace('>FR<','>RU<');
+writeFileSync(settingsPagePath,settingsPage);
+const projectsPagePath=resolve(root,'src/pages/ProjectsPage.tsx');
+let projectsPage=readFileSync(projectsPagePath,'utf8');
+projectsPage=projectsPage.replace('className="md:hidden min-h-[calc(100vh-56px)]','className="hidden min-h-[calc(100vh-56px)]').replace('className="hidden md:block max-w-7xl mx-auto px-4 sm:px-6 py-8"','className="block max-w-7xl mx-auto px-4 sm:px-6 py-8"');
+projectsPage=projectsPage.replace("i18n.language === 'en' ? 'en-US' : 'fr-FR'","i18n.language === 'ru' ? 'ru-RU' : i18n.language === 'en' ? 'en-US' : 'fr-FR'");
+writeFileSync(projectsPagePath,projectsPage);
