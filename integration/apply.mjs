@@ -31,3 +31,24 @@ const exporter=resolve(root,'src/components/editor/ExportModal.tsx');let exportS
 }
 const dst=resolve(root,'src/components/editor/HybridOverlay2D.tsx');mkdirSync(dirname(dst),{recursive:true});copyFileSync(new URL('./src/HybridOverlay2D.tsx',import.meta.url),dst);
 console.log('Lunex hybrid overlay integrated into EditorPage');
+
+// Server render PoC: add a separate explicit button to the existing export modal.
+const serverPanel=resolve(root,'src/components/editor/ServerExportPanel.tsx');
+copyFileSync(new URL('./src/ServerExportPanel.tsx',import.meta.url),serverPanel);
+let modal=readFileSync(exporter,'utf8');
+if(!modal.includes("import { ServerExportPanel }")) {
+  modal="import { ServerExportPanel } from './ServerExportPanel';\n"+modal;
+  const anchor='<div className="p-5 space-y-4">';
+  if(!modal.includes(anchor))throw Error('Upstream changed: export options wrapper missing');
+  modal=modal.replace(anchor,anchor+'\n              <ServerExportPanel project={project} />');
+  writeFileSync(exporter,modal);
+}
+// Dev-only proxy: API remains bound to loopback, not directly public.
+const viteConfig=resolve(root,'vite.config.ts');
+let vite=readFileSync(viteConfig,'utf8');
+if(!vite.includes("'/api/lunex-render'")) {
+  const anchor='  resolve: {';
+  if(!vite.includes(anchor))throw Error('Upstream changed: Vite resolve anchor missing');
+  vite=vite.replace(anchor,"  server: { proxy: { '/api/lunex-render': { target: 'http://127.0.0.1:4184', changeOrigin: false } } },\n"+anchor);
+  writeFileSync(viteConfig,vite);
+}
