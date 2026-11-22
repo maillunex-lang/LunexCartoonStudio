@@ -66,3 +66,17 @@ if(!prodVite.includes('base: "/cartoon-studio/"')){
   prodVite=prodVite.replace('export default defineConfig({','export default defineConfig({\n  base: "/cartoon-studio/",');
   writeFileSync(viteConfig,prodVite);
 }
+
+// Lunex-branded Russian home page and shared navigation.
+copyFileSync(new URL('./src/LunexLanding.tsx',import.meta.url),resolve(root,'src/pages/LandingPage.tsx'));
+const headerPath=resolve(root,'src/components/Header.tsx');
+let header=readFileSync(headerPath,'utf8');
+header=header.replaceAll('MyMotionStudio','Lunex Cartoon Studio').replaceAll('src="/icon-96.png"','src="/cartoon-studio/icon-96.png"').replace('>MM</Link>','>LX</Link>').replace(/>\s*MM\s*</g,'>LX<');
+writeFileSync(headerPath,header);
+const toolbarPath=resolve(root,'src/components/editor/EditorToolbar.tsx');
+let toolbar=readFileSync(toolbarPath,'utf8').replaceAll('MyMotionStudio','Lunex Cartoon Studio').replaceAll('src="/icon-96.png"','src="/cartoon-studio/icon-96.png"');
+writeFileSync(toolbarPath,toolbar);
+const htmlPath=resolve(root,'index.html');
+let html=readFileSync(htmlPath,'utf8');
+html=html.replace('<html lang="en"','<html lang="ru"').replaceAll('MyMotionStudio','Lunex Cartoon Studio').replaceAll('href="/favicon.png"','href="/cartoon-studio/favicon.png"').replaceAll('href="/icon-192.png"','href="/cartoon-studio/icon-192.png"').replaceAll('content="/motion-logo.png"','content="/cartoon-studio/motion-logo.png"');
+writeFileSync(htmlPath,html);
