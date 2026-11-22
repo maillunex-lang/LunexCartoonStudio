@@ -139,3 +139,9 @@
 - В `integration/apply.mjs` добавлен воспроизводимый desktop overlay: в Header/EditorToolbar старые image-логотипы заменены на LX CSS-значок; исправлена надпись RU; панель инспектора `w-80`, вкладки с переносом, таймлайн `h-60`.
 - `npm run typecheck` PASS; `npm run build` PASS; dist опубликован в Nginx. Полный production browser E2E исправлен под существующую IndexedDB и русский текст: MP4 download HTTP 200, 16018 bytes, job `c6c62df7-e470-4368-a295-ddf05689528b`, **PASS**.
 - Визуальный QA desktop по скриншотам, полноценная медиатека, редактируемый layout панелей и перевод оставшихся namespaces ещё не завершены. GDD-01 IN PROGRESS.
+
+## Asset Library MVP · 2026-11-22
+- Создана рабочая библиотека `integration/src/AssetLibrary.tsx`: 12 базовых 2D/3D-пресетов, категории, поиск, вставка в текущую сцену через `useEditorStore.addLayer`. 3D-пресеты доступны только в 3D-проекте. Библиотека открывается/закрывается из панели инструментов.
+- Это только примитивы и графические заготовки, **не готовые персонажи и не полноценная коллекция фонов**. Импорт ассетов и пользовательские коллекции требуют отдельной реализации.
+- `npm run typecheck` PASS; `npm run build` PASS; Nginx `nginx -t` PASS; сборка опубликована. Production Playwright export E2E после изменения **PASS**: MP4 HTTP 200, 14109 bytes.
+- Отдельный браузерный E2E именно вставки ассета ещё не завершён. GDD-01 IN PROGRESS.
