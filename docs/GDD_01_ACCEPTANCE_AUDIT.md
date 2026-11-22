@@ -5,6 +5,7 @@
 | Решение | Статус | Доказательства | До приёмки |
 |---|---|---|---|
 | EDITOR-001 B + EDITOR-002 A / TECH-EDITOR-002 A | ПРИНЯТО ВЛАДЕЛЬЦЕМ 2026-11-22; ДОП. E2E ОТКРЫТ | Переключатель в верхней панели, UI-only localStorage, простой режим скрывает инструменты/таймлайн, профессиональный сохраняет полный редактор; typecheck/build PASS, public Playwright simple→reload→professional PASS, MP4 PASS | Более глубокий E2E неизменности keyframes и 2D/3D/mixed |
+| DRAG-001 C / TECH-HYBRID-001 A stage 2 | РЕАЛИЗОВАНО, ПРИЁМКА ОЖИДАЕТСЯ | Native HTML5 Drag & Drop, 2D/3D asset library, mixed overlay drop, Vitest 8/8, public Playwright drop/persist/MP4 PASS | World-space raycast, точная глубина, параллакс, единый инспектор 2D/3D относятся к этапу 3; владелец ещё не принял этап 2 |
 | FORMAT-001 B | ЧАСТИЧНО | 2D/3D, смешанный 2D Konva + 3D Three, WebM/MP4 tests | 2.5D параллакс/глубина, единая редактируемая модель слоёв, mixed UI и E2E |
 | SCENE-001 B | ЧАСТИЧНО | Сцены, инструменты, базовая библиотека 12 заготовок | Готовые сцены, Drag & Drop, редактирование, сохранение/повторное открытие |
 | ANIM-001 B | ЧАСТИЧНО | Timeline/keyframes штатного редактора | Не менее 3 готовых движений, анимация mixed-слоёв в штатном инспекторе, E2E |
