@@ -165,3 +165,25 @@ if(!editorWithAssets.includes("import { AssetLibrary }")){
  editorWithAssets=editorWithAssets.replace("{is3D ? <LeftToolbar3D /> : <LeftToolbar2D />}","{is3D ? <LeftToolbar3D /> : <LeftToolbar2D />}\n        <div className=\"flex flex-col border-r border-ink-700 bg-ink-850\"><button data-lunex-assets-toggle aria-label=\"Библиотека объектов\" title=\"Библиотека объектов\" className={\`icon-btn m-2 \${assetsOpen ? 'icon-btn-active' : ''}\`} onClick={() => setAssetsOpen(v => !v)}><Library className=\"w-5 h-5\" /></button></div>\n        {assetsOpen && <AssetLibrary onClose={() => setAssetsOpen(false)} />}");
  writeFileSync(editorPageFile,editorWithAssets);
 }
+
+// Russian documentation, removing the legacy French fallback for RU.
+const ruDocsPath=resolve(root,'src/locales/ru/docs.ts');
+copyFileSync(new URL('./src/ru-docs.ts',import.meta.url),ruDocsPath);
+const docsPagePath=resolve(root,'src/pages/DocsPage.tsx');
+let docsPage=readFileSync(docsPagePath,'utf8');
+if(!docsPage.includes("import * as docsRu")){
+ docsPage=docsPage.replace("import * as docsEn from '@/locales/en/docs';","import * as docsEn from '@/locales/en/docs';\nimport * as docsRu from '@/locales/ru/docs';");
+ docsPage=docsPage.replace("i18n.language === 'en' ? docsEn : docsFr","i18n.language === 'ru' ? docsRu : i18n.language === 'en' ? docsEn : docsFr");
+ writeFileSync(docsPagePath,docsPage);
+}
+const settingsUiPath=resolve(root,'src/pages/SettingsPage.tsx');
+let settingsUi=readFileSync(settingsUiPath,'utf8').replace(/>\s*FR\s*<\/button>/,'>RU</button>');
+writeFileSync(settingsUiPath,settingsUi);
+const factoryPath=resolve(root,'src/lib/factories.ts');
+let factory=readFileSync(factoryPath,'utf8').replace("text: 'Votre texte'","text: 'Твой текст'");
+writeFileSync(factoryPath,factory);
+// PWA refresh: activate the newest published version promptly.
+const viteConfigPath=resolve(root,'vite.config.ts');
+let viteConfig=readFileSync(viteConfigPath,'utf8');
+viteConfig=viteConfig.replace('registerType: "autoUpdate"','registerType: "autoUpdate"');
+writeFileSync(viteConfigPath,viteConfig);
