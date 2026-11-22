@@ -231,3 +231,5 @@ if(!modeEditor.includes('data-lunex-mode-root')){
 // No changes to upstream scene persistence, canvas, rendering or export.
 const compatibilityTarget=resolve(root,'src/lib/LunexSceneCompatibility.ts');
 copyFileSync(new URL('./src/LunexSceneCompatibility.ts',import.meta.url),compatibilityTarget);
+
+copyFileSync(new URL('./src/LunexSceneCompatibility.test.ts',import.meta.url),resolve(root,'src/lib/LunexSceneCompatibility.test.ts'));
