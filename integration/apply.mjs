@@ -52,3 +52,17 @@ if(!vite.includes("'/api/lunex-render'")) {
   vite=vite.replace(anchor,"  server: { proxy: { '/api/lunex-render': { target: 'http://127.0.0.1:4184', changeOrigin: false } } },\n"+anchor);
   writeFileSync(viteConfig,vite);
 }
+
+// Production subpath deployment. Idempotent and limited to this upstream checkout.
+const appFile=resolve(root,'src/App.tsx');
+let appSource=readFileSync(appFile,'utf8');
+if(!appSource.includes('basename="/cartoon-studio"')){
+  if(!appSource.includes('<BrowserRouter>'))throw Error('Upstream changed: BrowserRouter anchor missing');
+  appSource=appSource.replace('<BrowserRouter>','<BrowserRouter basename="/cartoon-studio">');
+  writeFileSync(appFile,appSource);
+}
+let prodVite=readFileSync(viteConfig,'utf8');
+if(!prodVite.includes('base: "/cartoon-studio/"')){
+  prodVite=prodVite.replace('export default defineConfig({','export default defineConfig({\n  base: "/cartoon-studio/",');
+  writeFileSync(viteConfig,prodVite);
+}
