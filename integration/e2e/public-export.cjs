@@ -20,7 +20,7 @@ const base=process.env.LUNEX_PUBLIC_BASE||'https://rikagro.ru/cartoon-studio';
   await page.goto(base+'/projects',{waitUntil:'domcontentloaded'});
   await page.evaluate(async project=>{
    const request=indexedDB.open('MotionStudioDB',1);
-   await new Promise((resolve,reject)=>{request.onupgradeneeded=()=>request.result.createObjectStore('projects',{keyPath:'id'});request.onsuccess=resolve;request.onerror=reject});
+   await new Promise((resolve,reject)=>{request.onupgradeneeded=()=>{if(!request.result.objectStoreNames.contains('projects'))request.result.createObjectStore('projects',{keyPath:'id'});};request.onsuccess=resolve;request.onerror=reject});
    const db=request.result;
    await new Promise((resolve,reject)=>{const tx=db.transaction('projects','readwrite');tx.objectStore('projects').put(project);tx.oncomplete=resolve;tx.onerror=reject});db.close();
   },project);
