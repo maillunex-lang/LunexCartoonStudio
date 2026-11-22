@@ -18,12 +18,7 @@ const base=process.env.LUNEX_PUBLIC_BASE||'https://rikagro.ru/cartoon-studio';
   const context=await browser.newContext({httpCredentials:{username:process.env.LUNEX_USER||'lunex',password},ignoreHTTPSErrors:true,viewport:{width:1440,height:900}});
   const page=await context.newPage();page.on('pageerror',e=>console.log('PAGE_ERROR',e.message));
   await page.goto(base+'/projects',{waitUntil:'domcontentloaded'});
-  await page.evaluate(async project=>{
-   const request=indexedDB.open('MotionStudioDB',1);
-   await new Promise((resolve,reject)=>{request.onupgradeneeded=()=>{if(!request.result.objectStoreNames.contains('projects'))request.result.createObjectStore('projects',{keyPath:'id'});};request.onsuccess=resolve;request.onerror=reject});
-   const db=request.result;
-   await new Promise((resolve,reject)=>{const tx=db.transaction('projects','readwrite');tx.objectStore('projects').put(project);tx.oncomplete=resolve;tx.onerror=reject});db.close();
-  },project);
+  await page.evaluate(async project=>{ const db=await import('/cartoon-studio/src/lib/db.ts'); await db.db.projects.put(project); },project);
   await page.goto(base+'/editor/'+project.id);
   await page.locator('[data-lunex-hybrid] canvas').waitFor({timeout:30000});
   await page.getByText('Export',{exact:true}).first().click();
