@@ -8,13 +8,14 @@ import { normalizeCamera, type LunexCamera2D } from '@/lib/LunexDepthCamera';
  * The plane participates in the shared WebGL depth buffer and is occluded by meshes. */
 export function spriteWorldPosition(sprite:HybridSprite, camera:THREE.Camera, camera2d:LunexCamera2D, time:number):THREE.Vector3 {
  const c=normalizeCamera(camera2d);
+ const effectiveCamera=camera;
  const x=sampleAtTime(sprite,time), y=sprite.y;
  const depth=THREE.MathUtils.clamp(sprite.z??0,-5,5);
  const distance=Math.max(1,8-depth);
- const origin=new THREE.Vector3();camera.getWorldPosition(origin);
+ const origin=new THREE.Vector3();effectiveCamera.getWorldPosition(origin);
  const direction=new THREE.Vector3((x-480-c.x*(1+depth*.15))*c.zoom/480, -(y-270-c.y*(1+depth*.15))*c.zoom/270,0);
- const ray=new THREE.Raycaster();ray.setFromCamera(new THREE.Vector2(direction.x,direction.y),camera);
- const normal=new THREE.Vector3(0,0,-1).applyQuaternion(camera.getWorldQuaternion(new THREE.Quaternion()));
+ const ray=new THREE.Raycaster();ray.setFromCamera(new THREE.Vector2(direction.x,direction.y),effectiveCamera);
+ const normal=new THREE.Vector3(0,0,-1).applyQuaternion(effectiveCamera.getWorldQuaternion(new THREE.Quaternion()));
  const plane=new THREE.Plane().setFromNormalAndCoplanarPoint(normal,origin.clone().addScaledVector(normal,distance));
  const target=new THREE.Vector3();
  return ray.ray.intersectPlane(plane,target)??origin.clone().addScaledVector(normal,distance);
