@@ -80,3 +80,23 @@ const htmlPath=resolve(root,'index.html');
 let html=readFileSync(htmlPath,'utf8');
 html=html.replace('<html lang="en"','<html lang="ru"').replaceAll('MyMotionStudio','Lunex Cartoon Studio').replaceAll('href="/favicon.png"','href="/cartoon-studio/favicon.png"').replaceAll('href="/icon-192.png"','href="/cartoon-studio/icon-192.png"').replaceAll('content="/motion-logo.png"','content="/cartoon-studio/motion-logo.png"');
 writeFileSync(htmlPath,html);
+
+// Russian locale for project creation; other namespaces temporarily fall back to English.
+const ruPath=resolve(root,'src/locales/ru/projects.ts');
+mkdirSync(dirname(ruPath),{recursive:true});
+copyFileSync(new URL('./src/ru-projects.ts',import.meta.url),ruPath);
+const localesPath=resolve(root,'src/locales/index.ts');
+let locales=readFileSync(localesPath,'utf8');
+if(!locales.includes("import projects_ru from './ru/projects'")){
+  locales="import projects_ru from './ru/projects';\n"+locales;
+  locales=locales.replace('export const resources = {',"export const resources = {\n  ru: {common: {nav:{docs:'Документация',projects:'Мои проекты'},theme:{toggleAria:'Сменить тему'},language:{toggleAria:'Язык'},settingsLink:'Настройки',docsSearchPlaceholder:'Поиск...'},projects:projects_ru},");
+  writeFileSync(localesPath,locales);
+}
+const i18nPath=resolve(root,'src/lib/i18n.ts');
+let lang=readFileSync(i18nPath,'utf8');
+lang=lang.replace("fallbackLng: 'fr'","fallbackLng: 'en'").replace("supportedLngs: ['fr', 'en']","supportedLngs: ['ru', 'fr', 'en']").replace("order: ['localStorage', 'navigator']","order: ['localStorage']").replace("lookupLocalStorage: LANGUAGE_STORAGE_KEY,","lookupLocalStorage: LANGUAGE_STORAGE_KEY,");
+lang=lang.replace("fallbackLng: 'en',","fallbackLng: 'en',\n    lng: 'ru',");
+writeFileSync(i18nPath,lang);
+let sharedHeader=readFileSync(headerPath,'utf8');
+sharedHeader=sharedHeader.replaceAll("changeLanguage('fr')","changeLanguage('ru')").replaceAll("i18n.language === 'fr'","i18n.language === 'ru'").replaceAll('>FR<','>RU<');
+writeFileSync(headerPath,sharedHeader);
