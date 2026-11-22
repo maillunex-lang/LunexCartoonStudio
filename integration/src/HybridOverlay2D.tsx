@@ -25,8 +25,8 @@ export function HybridOverlay2D(){
   const changeCamera=(patch:Partial<LunexCamera2D>)=>updateScene(sceneId,{lunexCamera2d:{...camera,...patch}} as Partial<Scene>);
   return <div id="lunex-hybrid-overlay" data-lunex-hybrid="true" style={{position:'absolute',inset:0,pointerEvents:'none',zIndex:4}}>
     {enabled&&<Stage width={size.w} height={size.h} style={{pointerEvents:'none'}}><Layer>
-      {orderedSprites(sprites).map(s=>{const p=projectSprite({...s,x:sampleAtTime(s,time)},camera);return <Circle key={s.id} x={p.x/960*size.w} y={p.y/540*size.h} radius={24*p.scale} fill={s.color} shadowBlur={12} shadowOpacity={0.4}/>;})}
-      <Text text="Lunex 2D overlay + 3D viewport" x={14} y={12} fontSize={13} fill="#e5e7eb" shadowColor="#000" shadowBlur={4}/>
+      {/* Sprites now render in shared Three.js depth buffer, not on top of meshes. */}
+      <Text text="Lunex 2.5D world sprites" x={14} y={12} fontSize={13} fill="#e5e7eb" shadowColor="#000" shadowBlur={4}/>
     </Layer></Stage>}
     <div data-lunex-camera style={{position:'absolute',bottom:8,right:8,pointerEvents:'auto',display:'flex',alignItems:'center',gap:4,background:'#111827dc',padding:5,borderRadius:6,color:'white',fontSize:11}}>
       <span>Камера 2.5D</span>
