@@ -133,3 +133,24 @@ let projectsPage=readFileSync(projectsPagePath,'utf8');
 projectsPage=projectsPage.replace('className="md:hidden min-h-[calc(100vh-56px)]','className="hidden min-h-[calc(100vh-56px)]').replace('className="hidden md:block max-w-7xl mx-auto px-4 sm:px-6 py-8"','className="block max-w-7xl mx-auto px-4 sm:px-6 py-8"');
 projectsPage=projectsPage.replace("i18n.language === 'en' ? 'en-US' : 'fr-FR'","i18n.language === 'ru' ? 'ru-RU' : i18n.language === 'en' ? 'en-US' : 'fr-FR'");
 writeFileSync(projectsPagePath,projectsPage);
+
+// Desktop-first polish: no broken upstream icon; keep the real project controls.
+const headerFile=resolve(root,'src/components/Header.tsx');
+let desktopHeader=readFileSync(headerFile,'utf8');
+desktopHeader=desktopHeader.replace(/<img\s+src="\/cartoon-studio\/icon-96\.png"[\s\S]*?\/>/,'<span aria-hidden="true" className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 via-fuchsia-500 to-blue-500 text-white text-sm font-black shadow-lg shadow-violet-500/25">LX</span>');
+desktopHeader=desktopHeader.replace(/>\s*FR\s*<\/button>/,'>RU</button>');
+writeFileSync(headerFile,desktopHeader);
+const editorToolbarFile=resolve(root,'src/components/editor/EditorToolbar.tsx');
+let desktopToolbar=readFileSync(editorToolbarFile,'utf8');
+desktopToolbar=desktopToolbar.replace(/<img src="\/cartoon-studio\/icon-96\.png"[^>]*\/>/,'<span aria-label="Lunex Cartoon Studio" className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500 via-fuchsia-500 to-blue-500 text-white text-xs font-black">LX</span>');
+writeFileSync(editorToolbarFile,desktopToolbar);
+const editorPageFile=resolve(root,'src/pages/EditorPage.tsx');
+let desktopEditor=readFileSync(editorPageFile,'utf8');
+desktopEditor=desktopEditor.replace('className="w-72 shrink-0 border-l border-ink-700 bg-ink-850 flex flex-col overflow-hidden"','className="w-80 shrink-0 border-l border-ink-700 bg-ink-850 flex flex-col overflow-hidden"');
+desktopEditor=desktopEditor.replace('className="flex border-b border-ink-700"','className="flex flex-wrap border-b border-ink-700"');
+desktopEditor=desktopEditor.replace('className={\`flex-1 py-2 text-xs font-medium capitalize transition-colors','className={\`min-w-[20%] flex-1 px-1.5 py-2.5 text-[11px] font-medium transition-colors');
+writeFileSync(editorPageFile,desktopEditor);
+const timelineFile=resolve(root,'src/components/editor/Timeline.tsx');
+let desktopTimeline=readFileSync(timelineFile,'utf8');
+desktopTimeline=desktopTimeline.replace('className="h-48 border-t border-ink-700 bg-ink-850 flex flex-col shrink-0"','className="h-60 border-t border-ink-700 bg-ink-850 flex flex-col shrink-0"');
+writeFileSync(timelineFile,desktopTimeline);
