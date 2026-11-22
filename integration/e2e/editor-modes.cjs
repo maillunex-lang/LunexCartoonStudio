@@ -5,7 +5,7 @@ const fs=require('fs');
  const parts=raw.trim().split(/\r?\n/);const user=parts.find(x=>/user(name)?=/i.test(x))?.split('=').slice(1).join('=').trim()||'lunex';
  const password=parts.find(x=>/pass(word)?=/i.test(x))?.split('=').slice(1).join('=').trim();
  if(!password)throw Error('Missing E2E basic auth credentials');
- const browser=await chromium.launch({headless:true,args:['--no-sandbox']});
+ const browser=await chromium.launch({headless:true,executablePath:'/root/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell',args:['--no-sandbox']});
  const context=await browser.newContext({httpCredentials:{username:user,password},viewport:{width:1600,height:900},serviceWorkers:'block'});
  const page=await context.newPage();await page.goto('https://rikagro.ru/cartoon-studio/projects');
  const projects=await page.locator('a[href*="/editor/"]').count();console.log('PROJECT_LINKS',projects);
