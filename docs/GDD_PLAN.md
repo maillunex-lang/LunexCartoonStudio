@@ -12,7 +12,7 @@
 7. **ACCEPTANCE**: демонстрация и приёмка владельцем. Только после неё этап DONE и переход дальше.
 
 ## Текущий порядок закрытия GDD-01
-1. EDITOR-001 B + EDITOR-002 A **DESIGN APPROVED / RESEARCH COMPLETE / TECH APPROVAL PENDING**: переключатель в верхней панели, единые сцены/данные; варианты внедрения и кандидаты: `docs/research/GDD_01_EDITOR_002_GITHUB.md`. Никаких интеграций до отдельного утверждения.
+1. EDITOR-001 B + EDITOR-002 A **DESIGN + TECH APPROVED / IMPLEMENT IN PROGRESS**: переключатель в верхней панели, единые сцены/данные; варианты внедрения и кандидаты: `docs/research/GDD_01_EDITOR_002_GITHUB.md`. TECH-EDITOR-002 A утверждён 2026-11-22: только адаптация текущего React/Zustand, без новых зависимостей. Реализация, тесты и приёмка по порядку.
 2. FORMAT-001 B и SCENE-001 B: 2.5D/гибрид, готовые сцены, Drag & Drop.
 3. ANIM-001 B и CAMERA-001 B: пресеты движений и камер.
 4. PROJECT-001 B: сериалы, эпизоды, версии.
