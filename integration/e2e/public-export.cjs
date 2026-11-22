@@ -1,7 +1,9 @@
-const {chromium}=require(process.env.LUNEX_PLAYWRIGHT_PATH);
+const {chromium}=require(process.env.LUNEX_PLAYWRIGHT_PATH||'/srv/lunex-cartoon-studio-poc/upstream/node_modules/playwright');
+const fs=require('node:fs');
+const password=process.env.LUNEX_PASSWORD||fs.readFileSync('/root/.lunex-cartoon-studio-credentials','utf8').match(/^password=(.*)$/m)[1];
 const base=process.env.LUNEX_PUBLIC_BASE||'https://rikagro.ru/cartoon-studio';
 (async()=>{
- const browser=await chromium.launch({headless:true,executablePath:process.env.LUNEX_CHROME_PATH,args:['--no-sandbox','--enable-unsafe-swiftshader']});
+ const browser=await chromium.launch({headless:true,executablePath:process.env.LUNEX_CHROME_PATH||'/root/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell',args:['--no-sandbox','--enable-unsafe-swiftshader']});
  try{
   const dev=await browser.newPage();
   await dev.goto('http://127.0.0.1:4183/cartoon-studio/projects');
@@ -13,7 +15,7 @@ const base=process.env.LUNEX_PUBLIC_BASE||'https://rikagro.ru/cartoon-studio';
    p.scenes[0].lunex2d=[{id:'sprite',x:160,y:100,color:'#f59e0b',keyframes:[{time:0,x:160},{time:1,x:300}]}];
    return p;
   });
-  const context=await browser.newContext({httpCredentials:{username:process.env.LUNEX_USER,password:process.env.LUNEX_PASSWORD},ignoreHTTPSErrors:true,viewport:{width:1440,height:900}});
+  const context=await browser.newContext({httpCredentials:{username:process.env.LUNEX_USER||'lunex',password},ignoreHTTPSErrors:true,viewport:{width:1440,height:900}});
   const page=await context.newPage();page.on('pageerror',e=>console.log('PAGE_ERROR',e.message));
   await page.goto(base+'/projects',{waitUntil:'domcontentloaded'});
   await page.evaluate(async project=>{
