@@ -1,0 +1,37 @@
+const {chromium}=require(process.env.LUNEX_PLAYWRIGHT_PATH);
+const base=process.env.LUNEX_PUBLIC_BASE||'https://rikagro.ru/cartoon-studio';
+(async()=>{
+ const browser=await chromium.launch({headless:true,executablePath:process.env.LUNEX_CHROME_PATH,args:['--no-sandbox','--enable-unsafe-swiftshader']});
+ try{
+  const dev=await browser.newPage();
+  await dev.goto('http://127.0.0.1:4183/projects');
+  const project=await dev.evaluate(async()=>{
+   const {createProject,createMeshLayer}=await import('/src/lib/factories.ts');
+   const p=createProject('Production E2E render','3d','16:9');
+   p.scenes[0].duration=1;p.settings.shadows=false;
+   p.scenes[0].layers.push({...createMeshLayer('box'),color:'#00ff00',scale:{x:2,y:2,z:2}});
+   p.scenes[0].lunex2d=[{id:'sprite',x:160,y:100,color:'#f59e0b',keyframes:[{time:0,x:160},{time:1,x:300}]}];
+   return p;
+  });
+  const context=await browser.newContext({httpCredentials:{username:process.env.LUNEX_USER,password:process.env.LUNEX_PASSWORD},ignoreHTTPSErrors:true,viewport:{width:1440,height:900}});
+  const page=await context.newPage();page.on('pageerror',e=>console.log('PAGE_ERROR',e.message));
+  await page.goto(base+'/projects',{waitUntil:'domcontentloaded'});
+  await page.evaluate(async project=>{
+   const request=indexedDB.open('MotionStudioDB',1);
+   await new Promise((resolve,reject)=>{request.onupgradeneeded=()=>request.result.createObjectStore('projects',{keyPath:'id'});request.onsuccess=resolve;request.onerror=reject});
+   const db=request.result;
+   await new Promise((resolve,reject)=>{const tx=db.transaction('projects','readwrite');tx.objectStore('projects').put(project);tx.oncomplete=resolve;tx.onerror=reject});db.close();
+  },project);
+  await page.goto(base+'/editor/'+project.id);
+  await page.locator('[data-lunex-hybrid] canvas').waitFor({timeout:30000});
+  await page.getByText('Export',{exact:true}).first().click();
+  await page.getByText('Рендерить MP4 на сервере').click();
+  await page.getByText('Скачать готовый MP4').waitFor({timeout:90000});
+  const href=await page.getByText('Скачать готовый MP4').getAttribute('href');
+  const response=await context.request.get(new URL(href,base+'/').href);
+  const bytes=(await response.body()).length;
+  console.log('PRODUCTION_E2E',JSON.stringify({http:response.status(),bytes,href}));
+  await page.screenshot({path:'/tmp/lunex-prod-browser-e2e.png'});
+  if(response.status()!==200||bytes<1000)process.exitCode=1;
+ }finally{await browser.close()}
+})().catch(e=>{console.error('PRODUCTION_E2E_FAIL',e.message);process.exitCode=1});
