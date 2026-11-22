@@ -12,7 +12,7 @@
 7. **ACCEPTANCE**: демонстрация и приёмка владельцем. Только после неё этап DONE и переход дальше.
 
 ## Текущий порядок закрытия GDD-01
-1. EDITOR-001 B + EDITOR-002 A **IMPLEMENTED / TYPECHECK + BUILD + PUBLIC E2E PASS / OWNER ACCEPTANCE PENDING**: переключатель в верхней панели, единые сцены/данные; варианты внедрения и кандидаты: `docs/research/GDD_01_EDITOR_002_GITHUB.md`. TECH-EDITOR-002 A утверждён 2026-11-22: только адаптация текущего React/Zustand, без новых зависимостей. Реализован UI-only переключатель, сохранение выбора в localStorage, без изменения проекта. TypeScript/build PASS, Playwright E2E simple→reload→professional PASS, MP4 E2E PASS. Ожидается приёмка владельцем.
+1. EDITOR-001 B + EDITOR-002 A **OWNER ACCEPTED 2026-11-22 / DEEP DATA E2E STILL OPEN**: переключатель в верхней панели, единые сцены/данные; варианты внедрения и кандидаты: `docs/research/GDD_01_EDITOR_002_GITHUB.md`. TECH-EDITOR-002 A утверждён 2026-11-22: только адаптация текущего React/Zustand, без новых зависимостей. Реализован UI-only переключатель, сохранение выбора в localStorage, без изменения проекта. TypeScript/build PASS, Playwright E2E simple→reload→professional PASS, MP4 E2E PASS. Владелец подтвердил «Устраивает» 2026-11-22; дополнительный глубокий E2E данных остаётся техническим критерием общей приёмки GDD-01.
 2. FORMAT-001 B и SCENE-001 B: 2.5D/гибрид, готовые сцены, Drag & Drop.
 3. ANIM-001 B и CAMERA-001 B: пресеты движений и камер.
 4. PROJECT-001 B: сериалы, эпизоды, версии.
