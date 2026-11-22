@@ -194,36 +194,34 @@ pwaConfig=pwaConfig.replaceAll('src: "/desktop.webp"','src: "/cartoon-studio/des
 writeFileSync(pwaConfigPath,pwaConfig);
 
 
-// EDITOR-002 A / TECH-EDITOR-002 A: UI-only simple/pro mode; no project mutation.
+
+// EDITOR-002 A: independent UI preference, no scene/project mutations.
 const modeEditorPath=resolve(root,'src/pages/EditorPage.tsx');
 let modeEditor=readFileSync(modeEditorPath,'utf8');
 if(!modeEditor.includes('data-lunex-mode-root')){
-  modeEditor=modeEditor.replace("import { Monitor, Library } from 'lucide-react';","import { Monitor, Library } from 'lucide-react';");
-  modeEditor=modeEditor.replace("const [assetsOpen, setAssetsOpen] = useState(true);",`const [assetsOpen, setAssetsOpen] = useState(true);
-  const [lunexMode, setLunexMode] = useState<'simple' | 'professional'>(() => {
-    try { return localStorage.getItem('lunex-editor-mode') === 'simple' ? 'simple' : 'professional'; }
-    catch { return 'professional'; }
-  });
-  const changeLunexMode = (mode: 'simple' | 'professional') => {
-    setLunexMode(mode);
-    try { localStorage.setItem('lunex-editor-mode', mode); } catch { /* private browsing */ }
-  };`);
-  modeEditor=modeEditor.replace('<EditorToolbar onSave=',`<div data-lunex-mode-root={lunexMode} className="flex flex-col min-h-0 flex-1">
-      <div className="flex items-center justify-end gap-2 border-b border-ink-700 bg-ink-850 px-3 py-1.5" role="group" aria-label="Режим редактора">
-        <span className="text-xs text-ink-300 mr-1">Режим:</span>
-        <button type="button" data-lunex-mode="simple" aria-pressed={lunexMode === 'simple'} onClick={() => changeLunexMode('simple')} className={`rounded-md px-3 py-1 text-xs font-semibold ${lunexMode === 'simple' ? 'bg-violet-600 text-white' : 'bg-ink-700 text-ink-200 hover:bg-ink-600'}`}>Простой</button>
-        <button type="button" data-lunex-mode="professional" aria-pressed={lunexMode === 'professional'} onClick={() => changeLunexMode('professional')} className={`rounded-md px-3 py-1 text-xs font-semibold ${lunexMode === 'professional' ? 'bg-violet-600 text-white' : 'bg-ink-700 text-ink-200 hover:bg-ink-600'}`}>Профессиональный</button>
-      </div>
-      <EditorToolbar onSave=`);
-  modeEditor=modeEditor.replace('{is3D ? <LeftToolbar3D /> : <LeftToolbar2D />}','{lunexMode === \'professional\' && (is3D ? <LeftToolbar3D /> : <LeftToolbar2D />)}');
-  modeEditor=modeEditor.replace('{assetsOpen && <AssetLibrary','{assetsOpen && <AssetLibrary');
-  modeEditor=modeEditor.replace('<Timeline />',`{lunexMode === 'professional' ? <Timeline /> : (
-            <div data-lunex-simple-timeline className="flex h-12 shrink-0 items-center justify-center gap-3 border-t border-ink-700 bg-ink-850 text-xs text-ink-200">
-              <span>Быстрый режим</span><span className="text-ink-400">Анимация и ключевые кадры доступны в профессиональном режиме</span>
-            </div>
-          )}`);
-  modeEditor=modeEditor.replace('{/* Right panels */}',"{/* Right panels */}");
-  modeEditor=modeEditor.replace('<div className="w-80 shrink-0 border-l border-ink-700 bg-ink-850 flex flex-col overflow-hidden">','{lunexMode === \'professional\' && <div className="w-80 shrink-0 border-l border-ink-700 bg-ink-850 flex flex-col overflow-hidden">');
+  modeEditor=modeEditor.replace("const [assetsOpen, setAssetsOpen] = useState(true);", [
+    "const [assetsOpen, setAssetsOpen] = useState(true);",
+    "  const [lunexMode, setLunexMode] = useState<'simple' | 'professional'>(() => {",
+    "    try { return localStorage.getItem('lunex-editor-mode') === 'simple' ? 'simple' : 'professional'; }",
+    "    catch { return 'professional'; }",
+    "  });",
+    "  const changeLunexMode = (mode: 'simple' | 'professional') => {",
+    "    setLunexMode(mode);",
+    "    try { localStorage.setItem('lunex-editor-mode', mode); } catch { /* storage unavailable */ }",
+    "  };"
+  ].join('\n'));
+  const switcher = [
+    '<div data-lunex-mode-root={lunexMode} className="flex min-h-0 flex-1 flex-col">',
+    '  <div className="flex items-center justify-end gap-2 border-b border-ink-700 bg-ink-850 px-3 py-1.5" role="group" aria-label="Режим редактора">',
+    '    <span className="text-xs text-ink-300">Режим:</span>',
+    '    <button type="button" data-lunex-mode="simple" aria-pressed={lunexMode === "simple"} onClick={() => changeLunexMode("simple")} className={lunexMode === "simple" ? "rounded-md bg-violet-600 px-3 py-1 text-xs font-semibold text-white" : "rounded-md bg-ink-700 px-3 py-1 text-xs text-ink-200"}>Простой</button>',
+    '    <button type="button" data-lunex-mode="professional" aria-pressed={lunexMode === "professional"} onClick={() => changeLunexMode("professional")} className={lunexMode === "professional" ? "rounded-md bg-violet-600 px-3 py-1 text-xs font-semibold text-white" : "rounded-md bg-ink-700 px-3 py-1 text-xs text-ink-200"}>Профессиональный</button>',
+    '  </div>'
+  ].join('\n');
+  modeEditor=modeEditor.replace('      <EditorToolbar onSave=', '      '+switcher+'\n      <EditorToolbar onSave=');
+  modeEditor=modeEditor.replace('{is3D ? <LeftToolbar3D /> : <LeftToolbar2D />}', "{lunexMode === 'professional' && (is3D ? <LeftToolbar3D /> : <LeftToolbar2D />)}");
+  modeEditor=modeEditor.replace('<Timeline />', "{lunexMode === 'professional' ? <Timeline /> : <div data-lunex-simple-timeline className=\"flex h-12 shrink-0 items-center justify-center border-t border-ink-700 bg-ink-850 text-xs text-ink-300\">Для ключевых кадров переключись в профессиональный режим</div>}");
+  modeEditor=modeEditor.replace('<div className="w-80 shrink-0 border-l border-ink-700 bg-ink-850 flex flex-col overflow-hidden">', "{lunexMode === 'professional' && <div className=\"w-80 shrink-0 border-l border-ink-700 bg-ink-850 flex flex-col overflow-hidden\">");
   modeEditor=modeEditor.replace('      <ExportModal open={exportOpen}', '      </div>\n      <ExportModal open={exportOpen}');
   modeEditor=modeEditor.replace('          </div>\n        </div>\n      </div>\n\n      </div>\n      <ExportModal', '          </div>\n        </div>}\n      </div>\n\n      </div>\n      <ExportModal');
   writeFileSync(modeEditorPath,modeEditor);
