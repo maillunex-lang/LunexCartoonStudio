@@ -226,3 +226,8 @@ if(!modeEditor.includes('data-lunex-mode-root')){
   modeEditor=modeEditor.replace('          </div>\n        </div>\n      </div>\n\n      </div>\n      <ExportModal', '          </div>\n        </div>}\n      </div>\n\n      </div>\n      <ExportModal');
   writeFileSync(modeEditorPath,modeEditor);
 }
+
+// TECH-HYBRID-001 A, stage 1: additive compatibility adapter only.
+// No changes to upstream scene persistence, canvas, rendering or export.
+const compatibilityTarget=resolve(root,'src/lib/LunexSceneCompatibility.ts');
+copyFileSync(new URL('./src/LunexSceneCompatibility.ts',import.meta.url),compatibilityTarget);
