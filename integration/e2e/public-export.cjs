@@ -4,9 +4,9 @@ const base=process.env.LUNEX_PUBLIC_BASE||'https://rikagro.ru/cartoon-studio';
  const browser=await chromium.launch({headless:true,executablePath:process.env.LUNEX_CHROME_PATH,args:['--no-sandbox','--enable-unsafe-swiftshader']});
  try{
   const dev=await browser.newPage();
-  await dev.goto('http://127.0.0.1:4183/projects');
+  await dev.goto('http://127.0.0.1:4183/cartoon-studio/projects');
   const project=await dev.evaluate(async()=>{
-   const {createProject,createMeshLayer}=await import('/src/lib/factories.ts');
+   const {createProject,createMeshLayer}=await import('/cartoon-studio/src/lib/factories.ts');
    const p=createProject('Production E2E render','3d','16:9');
    p.scenes[0].duration=1;p.settings.shadows=false;
    p.scenes[0].layers.push({...createMeshLayer('box'),color:'#00ff00',scale:{x:2,y:2,z:2}});
