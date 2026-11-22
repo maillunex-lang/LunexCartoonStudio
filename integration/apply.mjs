@@ -182,8 +182,3 @@ writeFileSync(settingsUiPath,settingsUi);
 const factoryPath=resolve(root,'src/lib/factories.ts');
 let factory=readFileSync(factoryPath,'utf8').replace("text: 'Votre texte'","text: 'Твой текст'");
 writeFileSync(factoryPath,factory);
-// PWA refresh: activate the newest published version promptly.
-const viteConfigPath=resolve(root,'vite.config.ts');
-let viteConfig=readFileSync(viteConfigPath,'utf8');
-viteConfig=viteConfig.replace('registerType: "autoUpdate"','registerType: "autoUpdate"');
-writeFileSync(viteConfigPath,viteConfig);
