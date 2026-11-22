@@ -26,7 +26,7 @@ const base=process.env.LUNEX_PUBLIC_BASE||'https://rikagro.ru/cartoon-studio';
   await page.locator('[data-lunex-hybrid] canvas').waitFor({timeout:30000});
   await page.getByText('Export',{exact:true}).first().click();
   await page.getByText('Рендерить MP4 на сервере').click();
-  await page.getByText('Скачать готовый MP4').waitFor({timeout:90000});
+  await page.waitForTimeout(8000);console.log('EXPORT_PANEL_STATE',await page.locator('[data-lunex-server-export]').innerText());await page.getByText('Скачать готовый MP4').waitFor({timeout:30000});
   const href=await page.getByText('Скачать готовый MP4').getAttribute('href');
   const response=await context.request.get(new URL(href,base+'/').href);
   const bytes=(await response.body()).length;
