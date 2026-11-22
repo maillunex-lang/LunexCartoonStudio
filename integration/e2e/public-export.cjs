@@ -21,7 +21,7 @@ const base=process.env.LUNEX_PUBLIC_BASE||'https://rikagro.ru/cartoon-studio';
   await page.evaluate(async project=>{ const req=indexedDB.open('MotionStudioDB'); await new Promise((resolve,reject)=>{req.onupgradeneeded=()=>{const store=req.result.createObjectStore('projects',{keyPath:'id'});for(const field of ['name','mode','updatedAt','createdAt'])store.createIndex(field,field);};req.onsuccess=resolve;req.onerror=()=>reject(req.error);}); const db=req.result; await new Promise((resolve,reject)=>{const tx=db.transaction('projects','readwrite');tx.objectStore('projects').put(project);tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);});db.close(); },project);
   await page.goto(base+'/editor/'+project.id);
   await page.locator('[data-lunex-hybrid] canvas').waitFor({timeout:30000});
-  await page.getByText('Export',{exact:true}).first().click();
+  await page.getByText('Экспорт',{exact:true}).first().click();
   await page.getByText('Рендерить MP4 на сервере').click();
   await page.waitForTimeout(8000);console.log('EXPORT_PANEL_STATE',await page.locator('[data-lunex-server-export]').innerText());await page.getByText('Скачать готовый MP4').waitFor({timeout:30000});
   const href=await page.getByText('Скачать готовый MP4').getAttribute('href');
