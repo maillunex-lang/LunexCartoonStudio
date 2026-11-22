@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import type { Project } from '@/lib/types';
 
 type Job = { id: string; status: string; percent: number; completedSegments: number; totalSegments: number; error?: string | null; download?: string | null };
-const base = '/api/lunex-render/jobs';
+const base = import.meta.env.BASE_URL + 'api/lunex-render/jobs';
 
 export function ServerExportPanel({ project }: { project: Project }) {
   const [job, setJob] = useState<Job | null>(null);
@@ -23,7 +23,7 @@ export function ServerExportPanel({ project }: { project: Project }) {
     }, 1500);
     return () => { stopped = true; clearInterval(timer); };
   }, [job?.id, job?.status]);
-  const start = async () => {
+  const cancel = async () => { if (!job) return; try { const response = await fetch(base + '/' + encodeURIComponent(job.id), {method: 'DELETE'}); const data = await response.json(); if (!response.ok) throw new Error(data.error || 'Не удалось отменить'); setJob(data); } catch(e) {setError(String(e));} };\n  const start = async () => {
     setBusy(true); setError(''); setJob(null);
     try {
       const response = await fetch(base, { method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -48,7 +48,7 @@ export function ServerExportPanel({ project }: { project: Project }) {
     {job && <div className="text-xs space-y-2" aria-live="polite">
       <div>Задание: {job.status} · {job.percent}% ({job.completedSegments}/{job.totalSegments} сегментов)</div>
       <div className="h-2 bg-ink-700 rounded overflow-hidden"><div className="h-full bg-violet-500" style={{width: job.percent + '%'}} /></div>
-      {job.status === 'completed' && job.download && <a className="btn-primary block text-center" href={job.download} download>Скачать готовый MP4</a>}
+      {job.status === 'completed' && job.download && <a className="btn-primary block text-center" href={import.meta.env.BASE_URL.replace(/\/$/, '') + job.download} download>Скачать готовый MP4</a>}\n      {['queued','rendering'].includes(job.status) && <button type="button" className="w-full border border-ink-600 rounded p-2" onClick={cancel}>Отменить рендер</button>}
       {job.error && <div className="text-red-400">{job.error}</div>}
     </div>}
     {error && <p className="text-xs text-red-400" role="alert">{error}</p>}
